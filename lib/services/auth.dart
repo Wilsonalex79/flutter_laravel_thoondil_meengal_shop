@@ -28,6 +28,7 @@ class Auth extends ChangeNotifier {
       Dio.Response response = await dio().post(Constants.LOGIN_ROUTE, data: creds);
       print(response.data);
       String token = response.data.toString();
+      this.storeToken(token: token);
       this.tryToken(token: token);
       _isLoggedIn = true;
       notifyListeners();
@@ -48,6 +49,7 @@ class Auth extends ChangeNotifier {
         this._user = User.fromJson(response.data);
         this._token=token;
         this.storeToken(token: token);
+        print("Token Saved");
         notifyListeners();
         print(this._user);
       } catch (e){
