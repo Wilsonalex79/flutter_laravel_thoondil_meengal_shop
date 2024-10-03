@@ -1,29 +1,26 @@
-class Product{
+class Product {
   int id;
   String name;
-  String price;
-  String category;
-  String brand;
-  String image_path;
+  int price;
+  String unit;
 
+  // Constructor
   Product({
     required this.id,
     required this.name,
     required this.price,
-    required this.category,
-    required this.brand,
-    required this.image_path
+    required this.unit,
   });
 
-
   // Named constructor for creating an instance from a JSON map
-  Product.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        name = json['name'],
-        price = json['price'],
-        category = json['category'],
-        brand = json['brand'],
-        image_path = json['image_path'];
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+      id: json['id'] ?? 0,    // Provide a default value (e.g., 0) if id is null
+      name: json['name'] ?? '', // Provide an empty string if name is null
+      price: json['price'] != null ? json['price'] as int : 0, // Default price to 0 if null
+      unit: json['unit'] ?? '', // Provide an empty string if unit is null
+    );
+  }
 
   // Method to convert an instance to a JSON map
   Map<String, dynamic> toJson() {
@@ -31,10 +28,7 @@ class Product{
       'id': id,
       'name': name,
       'price': price,
-      'category': category,
-      'brand': brand,
-      'image_path': image_path,
+      'unit': unit,
     };
   }
-
 }
