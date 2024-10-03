@@ -8,7 +8,7 @@ class User{
     required this.email,
     required this.avatar
   });
-  
+
   User.fromJson(Map<String,dynamic>json):
         name= json['name'],
         email= json['email'],
