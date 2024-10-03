@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_laravel_thoondil_meengal_shop/services/CartProvider.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'dart:convert';
 
 import '../../models/Product.dart';
@@ -7,8 +9,10 @@ import '../../utils/Constants.dart';
 
 
 import '../../models/Order.dart';
-// import '../cart/CartScreen.dart';
+import '../cart/CartScreen.dart';
 // import 'ProductDetialScreen.dart';
+
+import 'package:badges/badges.dart' as badges; // Prefixing the badges package
 
 class ProductScreen extends StatefulWidget {
   final String title;
@@ -68,6 +72,10 @@ class _ProductScreenState extends State<ProductScreen> {
     setState(() {
       if (!cartProducts.contains(product)) {
         cartProducts.add(product);
+        Map cart = {
+          'product_id': product.id
+        };
+        Provider.of<CartProvider>(context, listen: false).addToCart(cart: cart, context: context);
       }
     });
   }
@@ -167,16 +175,27 @@ class _ProductScreenState extends State<ProductScreen> {
             },
           ),
           IconButton(
-            icon: Icon(Icons.shopping_cart),
+            icon: badges.Badge(
+              position: badges.BadgePosition.topEnd(top: -10, end: -12),
+              badgeContent: Text(
+                cartProducts.length.toString(),
+                style: TextStyle(color: Colors.white),
+              ),
+              badgeStyle: badges.BadgeStyle(
+                badgeColor: Colors.red,
+              ),
+              child: Icon(Icons.shopping_cart),
+            ),
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => CartScreen( title: 'Cart'),
-              //   ),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CartScreen( title: 'Cart'),
+                ),
+              );
             },
           ),
+
 
         ],
       ),
